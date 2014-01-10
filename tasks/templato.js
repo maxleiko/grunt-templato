@@ -35,7 +35,8 @@ module.exports = function(grunt) {
                   grunt.file.write(abspath.replace(f.src[0], f.dest), templato);
                 }
               } else {
-                grunt.log.writeln('Ignore: '+abspath);
+                grunt.log.writeln('Only copy (non-text file): '+abspath);
+                grunt.file.copy(abspath, abspath.replace(f.src[0], f.dest));
               }
               
               return taskCb();
