@@ -25,65 +25,47 @@ In your project's Gruntfile, add a section named `templato` to the data object p
 ```js
 grunt.initConfig({
   templato: {
-    options: {
-      // Task-specific options go here.
+    // exemple config with a JSON file 
+    jsonConfig: {
+      files: {
+        'dest/path': 'src/path' // if 'src/path' is a folder, then all files below will be processed recursively
+                                // and folder tree structure will be kept in the dest/path folder
+      },
+      values: grunt.file.readJSON('your/config.json') // you can use an external config.json file
     },
-    your_target: {
-      // Target-specific file lists and/or options go here.
-    },
-  },
+    // another example without the external JSON file
+    defaultConfig: {
+      files: {
+        'tmp/fixtures/myProject': 'test/fixtures/myProject'
+      },
+      values: { // or use in-file configurations =)
+        fooTitle: 'My title',
+        PORT: 8042,
+        list: {
+          one: 1,
+          two: 'secondOne'
+        },
+        dummyLog: 'some fake log'
+      }
+    }
+  }
 });
 ```
 
 ### Options
 
-#### options.separator
-Type: `String`
-Default value: `',  '`
-
-A string value that is used to do something with whatever.
-
-#### options.punctuation
-Type: `String`
-Default value: `'.'`
-
-A string value that is used to do something else with whatever else.
+TODO
 
 ### Usage Examples
 
-#### Default Options
-In this example, the default options are used to do something with whatever. So if the `testing` file has the content `Testing` and the `123` file had the content `1 2 3`, the generated result would be `Testing, 1 2 3.`
-
-```js
-grunt.initConfig({
-  templato: {
-    options: {},
-    files: {
-      'dest/default_options': ['src/testing', 'src/123'],
-    },
-  },
-});
-```
+TODO
 
 #### Custom Options
-In this example, custom options are used to do something else with whatever else. So if the `testing` file has the content `Testing` and the `123` file had the content `1 2 3`, the generated result in this case would be `Testing: 1 2 3 !!!`
 
-```js
-grunt.initConfig({
-  templato: {
-    options: {
-      separator: ': ',
-      punctuation: ' !!!',
-    },
-    files: {
-      'dest/default_options': ['src/testing', 'src/123'],
-    },
-  },
-});
-```
+TODO
 
 ## Contributing
-In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
+
 
 ## Release History
-_(Nothing yet)_
+_10/01/2014 - v0.0.1_
