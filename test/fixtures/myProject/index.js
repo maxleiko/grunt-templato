@@ -1,1 +1,1 @@
-console.log('index.js > <%= dummyLog %>');
+console.log('a\nb\tindex.js > <%= dummyLog %>');

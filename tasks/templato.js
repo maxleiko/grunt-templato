@@ -7,56 +7,52 @@
  */
 
 'use strict';
-
+var mmm = require('mmmagic');
+var async = require('async');
+var magic = new mmm.Magic(mmm.MAGIC_MIME_TYPE);
 module.exports = function(grunt) {
 
   // Please see the Grunt documentation for more information regarding task
   // creation: http://gruntjs.com/creating-tasks
 
   grunt.registerMultiTask('templato', 'Overall project template management using Grunt', function() {
+    var done = this.async();
+    var asyncTasks = [];
+    
     this.files.forEach(function (f) {
       // create destination directory
       grunt.file.mkdir(f.dest);
-      grunt.file.recurse(f.src[0], function (abspath, rootdir, subdir, filename) {
-        if (grunt.file.isFile(abspath)) {
-          var content = grunt.file.read(abspath);
-          var templato = grunt.template.process(content, {data: this.data.values});
-          grunt.file.write(abspath.replace(f.src[0], f.dest), templato);
-        }
+      grunt.file.recurse(f.src[0], function (abspath) {
+        (function (filepath) {
+          asyncTasks.push(function (taskCb) {
+            magic.detectFile(filepath, function (err, mimetype) {
+              if (err) return taskCb(err);
+
+              if (mimetype.slice(0, 'text'.length) === 'text') {
+                if (grunt.file.isFile(abspath)) {
+                  var content = grunt.file.read(abspath);
+                  var templato = grunt.template.process(content, {data: this.data.values});
+                  grunt.file.write(abspath.replace(f.src[0], f.dest), templato);
+                }
+              } else {
+                grunt.log.writeln('Ignore: '+abspath);
+              }
+              
+              return taskCb();
+            }.bind(this));
+          }.bind(this));
+        }.bind(this))(abspath);
       }.bind(this));
     }.bind(this));
-
-    // Merge task-specific and/or target-specific options with these defaults.
-//    var options = this.options({
-//      punctuation: '.',
-//      separator: ', '
-//    });
-//
-//    // Iterate over all specified file groups.
-//    this.files.forEach(function(f) {
-//      // Concat specified files.
-//      var src = f.src.filter(function(filepath) {
-//        // Warn on and remove invalid source files (if nonull was set).
-//        if (!grunt.file.exists(filepath)) {
-//          grunt.log.warn('Source file "' + filepath + '" not found.');
-//          return false;
-//        } else {
-//          return true;
-//        }
-//      }).map(function(filepath) {
-//        // Read file source.
-//        return grunt.file.read(filepath);
-//      }).join(grunt.util.normalizelf(options.separator));
-//
-//      // Handle options.
-//      src += options.punctuation;
-//
-//      // Write the destination file.
-//      grunt.file.write(f.dest, src);
-//
-//      // Print a success message.
-//      grunt.log.writeln('File "' + f.dest + '" created.');
-//    });
+    
+    async.parallel(asyncTasks, function (err) {
+      if (err) {
+        grunt.log.error(err.message);
+        return done();
+      }
+      
+      return done();
+    });
   });
 
 };

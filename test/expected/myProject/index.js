@@ -1,1 +1,1 @@
-console.log('index.js > some fake log');
+console.log('a\nb\tindex.js > some fake log');
