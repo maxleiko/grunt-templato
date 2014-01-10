@@ -1,0 +1,9 @@
+{
+  "fooTitle": "My title",
+  "PORT": 8042,
+  "list": {
+    "one": 1,
+    "two": "secondOne"
+  },
+  "dummyLog": "some fake log"
+}
