@@ -1,3 +1,3 @@
 public class Potato {
-    private String PORT = "8042";
+    private String PORT = "<%= PORT %>";
 }

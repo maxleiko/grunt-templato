@@ -58,7 +58,43 @@ TODO
 
 ### Usage Examples
 
-TODO
+Once you have set up a **src** & **dest** path, if you run the task `grunt templato` it will generate in your **dest** folder the same files pointed out by **src** but processed by the template engine.  
+```js
+  files: {
+    'dest/path': 'src/path' // if 'src/path' is a folder, then all files below will be processed recursively
+                            // and folder tree structure will be kept in the dest/path folder
+  },
+```
+Meaning that you have access to all the **values** you have given to `templato` in your files (pointed by your **src** folder) through the use of `<%= VAR_NAME %>`
+
+```html
+<html>
+<head>
+    <title><%= fooTitle %></title>
+</head>
+<body>
+    <ul>
+        <li><%= list.one %></li>
+        <li><%= list.two %></li>
+    </ul>
+</body>
+</html>
+```
+
+or 
+
+```java
+public class Potato {
+    private String PORT = "<%= PORT %>";
+}
+```
+
+or
+
+```js
+var dummy = require('dummy');
+console.log('index.js > <%= dummyLog %>');
+```
 
 #### Custom Options
 
